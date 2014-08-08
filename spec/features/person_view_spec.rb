@@ -27,7 +27,7 @@ describe 'the person view', type: :feature do
 		page.click_button('Create Phone number')
 
 		expect(current_path).to eq(person_path(person))
-		expect(page).to have_content('555-2222')
+		expect(page).to 				have_content('555-2222')
 	end
 
 	it 'has links to edit phone numbers' do 
@@ -53,5 +53,14 @@ describe 'the person view', type: :feature do
 		person.phone_numbers.each do |phone|
 			expect(page).to have_link('Delete', href: phone_number_path(phone))
 		end
+	end
+
+	it 'deletes a phone number' do 
+		phone = person.phone_numbers.first
+
+		first(:link, 'Delete').click
+
+		expect(current_path).to eq(person_path(person))
+		expect(page).to_not 		have_content(phone)
 	end
 end
