@@ -14,7 +14,8 @@
 	<% @person.phone_numbers.each do |phone| %>
 		<li>
 			<%= phone.number %>
-			<%= link_to('Edit', edit_phone_number_path(phone)) %>
+			<%= link_to('Edit',   edit_phone_number_path(phone)) %>
+			<%= link_to('Delete', phone_number_path(phone), method: :delete, data: { confirm: 'Are you sure?' }) %>
 		</li>
 	<% end %>
 </ul>
