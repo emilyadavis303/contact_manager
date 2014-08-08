@@ -16,7 +16,7 @@ RSpec.describe PhoneNumber, :type => :model do
   it 'must have a reference to a person' do
   	phone_number.person_id = nil
 
-  	expect(phone_number).not_to be_valid
+  	expect(phone_number).to_not be_valid
   end
 
   it 'is associated with a person' do
