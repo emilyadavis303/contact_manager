@@ -29,4 +29,23 @@ describe 'the person view', type: :feature do
 		expect(current_path).to eq(person_path(person))
 		expect(page).to have_content('555-2222')
 	end
+
+	it 'has links to edit phone numbers' do 
+		person.phone_numbers.each do |phone|
+			expect(page).to have_link('Edit', href: edit_phone_number_path(phone))
+		end
+	end
+
+	it 'edits a phone number' do 
+		phone 		 = person.phone_numbers.first
+		old_number = phone.number
+
+		first(:link, 'Edit').click
+		page.fill_in('Number', with: '555-4545')
+		page.click_button('Update Phone number')
+		
+		expect(current_path).to eq(person_path(person))
+		expect(page).to 				have_content('555-4545')
+		expect(page).to_not 		have_content(old_number)
+	end
 end
