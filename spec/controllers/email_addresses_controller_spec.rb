@@ -51,6 +51,9 @@ RSpec.describe EmailAddressesController, :type => :controller do
 
   describe "POST create" do
     describe "with valid params" do
+      let(:human) { Person.create(first_name: 'Human', last_name: 'Being') }
+      let(:valid_attributes) { { address: 'human_ex@example.com', person_id: human.id } }
+
       it "creates a new EmailAddress" do
         expect {
           post :create, {:email_address => valid_attributes}, valid_session
@@ -65,7 +68,7 @@ RSpec.describe EmailAddressesController, :type => :controller do
 
       it "redirects to the created email_address" do
         post :create, {:email_address => valid_attributes}, valid_session
-        expect(response).to redirect_to(EmailAddress.last)
+        expect(response).to redirect_to(human)
       end
     end
 

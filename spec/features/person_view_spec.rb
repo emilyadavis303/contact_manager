@@ -68,6 +68,7 @@ describe 'the person view', type: :feature do
 	end
 
 	describe 'in relation to email addresses' do
+		
 		before(:each) do
 			person.email_addresses.create(address: 'being@example.com')
 			person.email_addresses.create(address: 'human_be@example.com')
@@ -84,5 +85,14 @@ describe 'the person view', type: :feature do
 			expect(page).to have_link('Add email address', href: new_email_address_path(person_id: person.id))
 		end
 		
+		it 'adds a new email address' do
+			page.click_link('Add email address')
+			page.fill_in('Address', with: 'tweaked_example@example.com')
+			page.click_button('Create Email address')
+
+			expect(current_path).to eq(person_path(person))
+			expect(page).to 				have_content('tweaked_example@example.com')
+		end
 	end
+
 end
