@@ -87,11 +87,45 @@ describe 'the person view', type: :feature do
 		
 		it 'adds a new email address' do
 			page.click_link('Add email address')
-			page.fill_in('Address', with: 'tweaked_example@example.com')
+			page.fill_in('Address', with: 'new_example@example.com')
 			page.click_button('Create Email address')
 
 			expect(current_path).to eq(person_path(person))
-			expect(page).to 				have_content('tweaked_example@example.com')
+			expect(page).to 				have_content('new_example@example.com')
+		end
+
+		it 'has links to edit email addresses' do 
+			person.email_addresses.each do |email_address|
+				expect(page).to have_link('Edit', href: edit_email_address_path(email_address))
+			end
+		end
+
+		it 'edits an email address' do 
+			email 		 = person.email_addresses.first
+			old_email  = email.address
+
+			first(:link, 'Edit').click
+			page.fill_in('Address', with: 'edit@example.com')
+			page.click_button('Update Email address')
+			
+			expect(current_path).to eq(person_path(person))
+			expect(page).to 				have_content('edit@example.com')
+			expect(page).to_not 		have_content(old_email)
+		end
+
+		it 'has links to delete email addresses' do 
+			person.email_addresses.each do |email_address|
+				expect(page).to have_link('Delete', href: email_address_path(email_address))
+			end
+		end
+
+		it 'deletes an email address' do 
+			email = person.email_addresses.first
+
+			first(:link, 'Delete').click
+
+			expect(current_path).to eq(person_path(person))
+			expect(page).to_not 		have_content(email)
 		end
 	end
 
